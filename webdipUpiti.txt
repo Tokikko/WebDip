@@ -1,0 +1,129 @@
+SELECT id_kurirskasluzba, ks.naziv, kilometraza, vrijemeDostava, id_ruta, m.naziv AS odrediste, m1.naziv AS polaziste
+FROM kurirska_sluzba ks
+JOIN ruta r ON ks.id_kurirskasluzba = r.kurirskaSluzba
+JOIN mjesto m ON r.odrediste = m.id_mjesto
+JOIN mjesto m1 ON r.polaziste = m1.id_mjesto
+
+SELECT ks.naziv, m.naziv, r.tip
+FROM kurirska_sluzba ks
+LEFT JOIN ruta r ON r.tip =2
+LEFT JOIN mjesto m ON m.naziv =  'Split'
+
+SELECT id_ruta
+FROM ruta r
+WHERE r.tip =2
+
+SELECT ks.naziv
+FROM kurirska_sluzba ks
+LEFT JOIN ruta r ON ks.id_kurirskasluzba = r.kurirskaSluzba
+WHERE r.tip =2 
+
+SELECT DISTINCT ks.naziv, m.naziv
+FROM kurirska_sluzba ks
+LEFT JOIN ruta r ON ks.id_kurirskasluzba = r.kurirskaSluzba
+LEFT JOIN mjesto_has_ruta mhr ON mhr.id_rutamjesto = r.id_ruta
+LEFT JOIN mjesto m ON m.id_mjesto = mhr.mjesto
+WHERE m.naziv =  'Sibenik'
+
+
+select r.naziv as Ruta,r.cijena as Cijena,r.vrijemeDostava as VrijemeDostave, r.kilometraza as Kilometraza,  ks.naziv as KurirskaSluzba, opis as TipDostave from ruta r left join kurirska_sluzba ks on r.kurirskaSluzba = ks.id_kurirskasluzba  left join tippaket tp on r.tip = tp.id_tip where r.naziv = 'Split-Zagreb'
+
+
+SELECT ks.naziv, r.naziv
+FROM kurirska_sluzba ks
+JOIN ruta r ON ks.id_kurirskasluzba = r.kurirskasluzba
+JOIN paketPostar pp ON pp.ruta = r.id_ruta
+
+
+SELECT ks.naziv, COUNT( r.naziv ) 
+FROM kurirska_sluzba ks
+JOIN ruta r ON ks.id_kurirskasluzba = r.kurirskasluzba
+JOIN paketPostar pp ON pp.ruta = r.id_ruta
+GROUP BY 1 
+
+SELECT r.naziv, COUNT( r.id_ruta ) 
+FROM ruta r
+JOIN paketPostar pp ON r.id_ruta = pp.ruta
+GROUP BY 1 
+
+select m.naziv from mjesto m left join mjesto_has_ruta mhr on m.id_mjesto = mhr.mjesto left JOIN ruta r on r.id_ruta = mhr.ruta where r.id_ruta = 1
+
+
+SELECT pp.ime, m.naziv
+FROM paketPostar pp
+JOIN ruta r ON r.id_ruta = pp.ruta
+JOIN mjesto_has_ruta mhr ON mhr.ruta = r.id_ruta
+JOIN mjesto m ON m.id_mjesto = mhr.mjesto
+WHERE pp.ime =  'vycxycyxccxycyc'
+
+SELECT mhr.id_rutamjesto, m.naziv
+FROM paketPostar pp
+JOIN ruta r ON r.id_ruta = pp.ruta
+JOIN mjesto_has_ruta mhr ON mhr.ruta = r.id_ruta
+JOIN mjesto m ON m.id_mjesto = mhr.mjesto
+WHERE pp.ime =  'vycxycyxccxycyc'
+
+
+SELECT k.korisnickoIme, count(pz.korisnik)
+FROM korisnik k
+right JOIN paketZahtjev pz ON pz.korisnik = k.id_korisnik
+GROUP BY 1 
+
+SELECT k.korisnickoIme, count(pz.korisnik)
+FROM korisnik k
+right JOIN paketZahtjev pz ON pz.korisnik = k.id_korisnik where pz.vrijeme < '2014-06-19' and pz.vrijeme > '2014-06-06'
+GROUP BY 1 
+
+SELECT k.korisnickoIme, k.adresa, k.grad, pp.statusIsporuke
+FROM korisnik k
+LEFT JOIN paketZahtjev pz ON k.id_korisnik = pz.korisnik
+LEFT JOIN paketPostar pp ON pz.id_zahtjev = pp.zahtjev
+WHERE pp.statusIsporuke =  '2'
+
+
+
+
+
+SELECT pz.id_zahtjev
+FROM paketZahtjev pz
+LEFT JOIN kurirska_sluzba ks ON ks.id_kurirskasluzba = pz.sluzba
+LEFT JOIN kurirskasluzbapostar ON kurirskasluzbapostar.kurirskasluzba = pz.sluzba
+WHERE kurirskasluzbapostar.postar =  '18'
+
+SELECT pz.id_zahtjev
+FROM paketZahtjev pz
+LEFT JOIN kurirska_sluzba ks ON ks.id_kurirskasluzba = pz.sluzba
+LEFT JOIN kurirskasluzbapostar ON kurirskasluzbapostar.kurirskasluzba = pz.sluzba
+WHERE kurirskasluzbapostar.postar =  '18' and pz.status = 0
+
+SELECT pz.id_zahtjev,concat(pz.ime, pz.prezime) as imeprezim
+FROM paketZahtjev pz
+LEFT JOIN kurirska_sluzba ks ON ks.id_kurirskasluzba = pz.sluzba
+LEFT JOIN kurirskasluzbapostar ON kurirskasluzbapostar.kurirskasluzba = pz.sluzba
+WHERE kurirskasluzbapostar.postar =  '18' and pz.status = 0
+
+
+
+
+SELECT pz.id_zahtjev
+FROM paketZahtjev pz
+LEFT JOIN paketPostar pp ON pp.zahtjev = pz.id_zahtjev
+LEFT JOIN korisnik k ON k.id_korisnik = pz.korisnik
+WHERE k.id_korisnik =  '50'
+
+
+SELECT pp.ime, m.naziv
+FROM paketPostar pp
+LEFT JOIN mjestorutapaket mrp ON pp.id_paket = mrp.paket
+LEFT JOIN mjesto_has_ruta mhr ON mhr.id_rutamjesto = mrp.mjestoruta
+LEFT JOIN mjesto m ON m.id_mjesto = mhr.mjesto
+LEFT JOIN paketZahtjev pz ON pz.id_zahtjev = pp.zahtjev
+WHERE pz.korisnik =  '50'
+
+
+
+
+
+
+
+select k.korisnickoIme, k.adresa, k.grad, pp.statusIsporuke from korisnik k left join paketZahtjev pz on k.id_korisnik = pz.korisnik left join paketPostar pp on pz.id_zahtjev = pp.zahtjev where pp.statusIsporuke = '2'

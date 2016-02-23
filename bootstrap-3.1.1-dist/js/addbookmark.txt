@@ -1,0 +1,36 @@
+
+<div class="form">
+      
+     
+      
+  
+        <div id="signup">   
+          <h1>Save bookmark</h1>
+          
+          @using (Html.BeginForm())
+          {
+
+          <div class="top-row">
+            <div class="field-wrap">
+                
+                    <label>
+                        <span class="req"></span>
+                    </label>
+                    <input class="text-center" type="text" required autocomplete="off"  name="url" id="url" />
+               
+            </div>
+        
+           
+          </div>
+
+
+
+          <button type="submit" class="button button-block" name="sendIT" id="sendIT">Save</button>
+
+
+          }
+        </div>
+   
+  
+      
+</div> <!-- /form -->
